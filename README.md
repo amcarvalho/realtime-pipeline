@@ -19,10 +19,9 @@ If you want to generate a few sample events:
 ## Pipeline
 The pipeline is made of the following components:
 * Kinesis stream receiving user events. A user event contains pairs of `user_id`, `postcode`.
-* Lambda function consuming user events. Each pair `user_id`, `postcode` is store on a DynamoDB, where 
-the `user_id` serves as the key
+* Lambda function consuming user events. Each pair `user_id`, `postcode` is stored on a DynamoDB
 * Kinesis stream receiving pageview events. A pageview event contains pairs of `user_id`, `url`.
-* Lambda function consuming pageview event. Each pair `user_id`, `url` is enriched with the current user's
+* Lambda function consuming pageview events. Each pair `user_id`, `url` is enriched with the current user's
 postcode, which the function gets from the DynamoDB. Enriched records containing `user_id`, `url` and
 `postcode` are subsequently published to another Kinesis stream.
 * Kinesis stream containing enriched pageviews with triplets `user_id`, `url`, `postcode`.
