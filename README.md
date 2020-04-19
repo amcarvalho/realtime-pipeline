@@ -1,6 +1,6 @@
 # Realtime Pipeline
 
-This repo contains a realtime pipeline using 3 Kinesis streams, 1 Kinesis Data Stream, 1 DynamoDB
+This repo contains a realtime pipeline using 3 Kinesis Streams, 1 Kinesis Data Delivery Stream, 1 DynamoDB
 and 2 Lambda functions. I've created this mostly as an exercise to get up to speed with terraform.
 
 ## Requirements
