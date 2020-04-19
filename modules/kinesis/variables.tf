@@ -1,0 +1,1 @@
+variable "enriched_pageview_s3_bucket_arn" { type = string }
