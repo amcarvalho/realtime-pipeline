@@ -8,7 +8,7 @@ Please install:
 * Python 3.6
 * Terraform (instructions to install [here](https://learn.hashicorp.com/terraform/getting-started/install.html))
 
-## Hot to Deploy
+## How to Deploy
 Inside the `prod` directory, run `terraform apply`.
 
 ## Generating Events
