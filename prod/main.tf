@@ -9,6 +9,7 @@ module "s3" {
 module "kinesis" {
   source = "../modules/kinesis"
   enriched_pageview_s3_bucket_arn = module.s3.enriched_pageview_s3_bucket_arn
+  pageviews_count_by_postcode_s3_bucket_arn = module.s3.pageviews_count_by_postcode_s3_bucket_arn
 }
 
 module "dynamodb" {
