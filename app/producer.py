@@ -36,7 +36,7 @@ def put_pageview(user_id, url):
 
 def main():
     counter = 0
-    while counter < 50:
+    while counter < 500:
         user_id = f"user{str(randrange(10)+1)}"
         url = f"page{str(randrange(10)+1)}"
         postcode = postcodes[randrange(10)]
