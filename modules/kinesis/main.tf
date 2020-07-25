@@ -16,6 +16,73 @@ resource "aws_kinesis_stream" "enriched_pageview_stream" {
   retention_period = 24
 }
 
+## Pageviews Count by Postcode Firehose ##
+resource "aws_kinesis_firehose_delivery_stream" "pageviews_count_by_postcode_delivery_stream" {
+  name        = "pageviews_count_by_postcode_delivery_stream"
+  destination = "s3"
+
+  s3_configuration {
+    bucket_arn = var.pageviews_count_by_postcode_s3_bucket_arn
+    role_arn   = aws_iam_role.pageviews_count_by_postcode_firehose_role.arn
+    buffer_interval = 60
+    buffer_size = 1
+    cloudwatch_logging_options {
+      enabled = true
+      log_group_name = aws_cloudwatch_log_group.pageviews_count_by_postcode_delivery_stream_log_group.name
+      log_stream_name = "S3Delivery"
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_group" "pageviews_count_by_postcode_delivery_stream_log_group" {
+  name = "/aws/kinesisfirehose/enriched_pageview_delivery_stream_log_group"
+}
+
+resource "aws_iam_role" "pageviews_count_by_postcode_firehose_role" {
+  name = "pageviews_count_by_postcode_firehose_role"
+  assume_role_policy = data.aws_iam_policy_document.pageviews_count_by_postcode_firehose_role_document.json
+}
+
+data "aws_iam_policy_document" "pageviews_count_by_postcode_firehose_role_document" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      identifiers = ["firehose.amazonaws.com"]
+      type = "Service"
+    }
+    effect = "Allow"
+    sid = ""
+  }
+}
+
+resource "aws_iam_role_policy" "pageviews_count_by_postcode_firehose_policy" {
+  name = "pageviews_count_by_postcode_firehose_policy"
+  role = aws_iam_role.pageviews_count_by_postcode_firehose_role.id
+  policy = data.aws_iam_policy_document.pageviews_count_by_postcode_consumer_policy_document.json
+}
+
+data "aws_iam_policy_document" "pageviews_count_by_postcode_consumer_policy_document" {
+  statement {
+    actions = ["kinesis:ListStreams"]
+    resources = ["*"]
+    effect = "Allow"
+  }
+
+  statement {
+    actions = ["logs:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    actions = ["s3:*"]
+    resources = [
+      var.pageviews_count_by_postcode_s3_bucket_arn,
+      "${var.pageviews_count_by_postcode_s3_bucket_arn}/*",
+    ]
+  }
+}
+
+## Enriched Pageviews Firehose ##
 resource "aws_kinesis_firehose_delivery_stream" "enriched_pageview_delivery_stream" {
   name        = "enriched_pageview_delivery_stream"
   destination = "s3"
