@@ -1,4 +1,4 @@
-output "enriched_pageview_s3_bucket_arn" {
+output "enriched_pageviews_s3_bucket_arn" {
   value = aws_s3_bucket.enriched-pageviews-bucket.arn
 }
 
