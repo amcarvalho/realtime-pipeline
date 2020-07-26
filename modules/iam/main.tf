@@ -115,8 +115,7 @@ data "aws_iam_policy_document" "enriched_pageview_firehose_role_document" {
     actions = ["sts:AssumeRole"]
     principals {
       identifiers = [
-        "firehose.amazonaws.com",
-        "kinesisanalytics.amazonaws.com"
+        "firehose.amazonaws.com"
       ]
       type = "Service"
     }
@@ -125,8 +124,8 @@ data "aws_iam_policy_document" "enriched_pageview_firehose_role_document" {
   }
 }
 
-resource "aws_iam_role_policy" "firehose_policy" {
-  name = "firehose_policy"
+resource "aws_iam_role_policy" "enriched_pageview_firehose_policy" {
+  name = "enriched_pageview_firehose_policy"
   role = aws_iam_role.enriched_pageview_firehose_role.id
   policy = data.aws_iam_policy_document.enriched_pageviews_stream_consumer_policy_document.json
 }
