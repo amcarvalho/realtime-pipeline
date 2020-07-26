@@ -114,9 +114,7 @@ data "aws_iam_policy_document" "enriched_pageview_firehose_role_document" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      identifiers = [
-        "firehose.amazonaws.com"
-      ]
+      identifiers = ["firehose.amazonaws.com"]
       type = "Service"
     }
     effect = "Allow"
