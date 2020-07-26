@@ -2,14 +2,14 @@
 
 This repo contains a realtime pipeline using 3 Kinesis streams, 1 Kinesis Data Analytics Application,
 2 Kinesis Firehoses, 1 DynamoDB, 2 Lambda functions and 2 S3 Buckets. I've created this mostly as 
-an exercise to get up to speed with terraform.
+an exercise to get up to speed with terraform and also get familiar with Kinesis Data Analytics applications.
 
 ## Requirements
 Please install:
 * Python 3.6
 * Terraform (instructions to install [here](https://learn.hashicorp.com/terraform/getting-started/install.html))
 
-## Hot to Deploy
+## How to Deploy
 Inside the `prod` directory, run `terraform apply`.
 
 ## Generating Events
