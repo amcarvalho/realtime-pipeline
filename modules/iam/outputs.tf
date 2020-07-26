@@ -13,3 +13,7 @@ output "enriched_pageview_firehose_role_arn" {
 output "pageviews_count_by_postcode_firehose_role_arn" {
   value = aws_iam_role.pageviews_count_by_postcode_firehose_role.arn
 }
+
+output "pageviews_count_by_postcode_kinesis_application_role_arn" {
+  value = aws_iam_role.pageviews_count_by_postcode_kinesis_application_role.arn
+}

@@ -22,6 +22,8 @@ module "kinesis" {
   pageviews_count_by_postcode_s3_bucket_arn = module.s3.pageviews_count_by_postcode_s3_bucket_arn
   enriched_pageview_firehose_role_arn = module.iam.enriched_pageview_firehose_role_arn
   pageviews_count_by_postcode_firehose_role_arn = module.iam.pageviews_count_by_postcode_firehose_role_arn
+  pageviews_count_by_postcode_kinesis_application_role_arn = module.iam.pageviews_count_by_postcode_kinesis_application_role_arn
+  pageviews_count_by_postcode_delivery_stream_arn = module.kinesis.pageviews_count_by_postcode_delivery_stream_arn
 }
 
 module "dynamodb" {

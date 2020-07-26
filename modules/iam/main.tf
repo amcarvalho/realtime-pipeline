@@ -114,7 +114,10 @@ data "aws_iam_policy_document" "enriched_pageview_firehose_role_document" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      identifiers = ["firehose.amazonaws.com"]
+      identifiers = [
+        "firehose.amazonaws.com",
+        "kinesisanalytics.amazonaws.com"
+      ]
       type = "Service"
     }
     effect = "Allow"
@@ -197,6 +200,56 @@ data "aws_iam_policy_document" "pageviews_count_by_postcode_consumer_policy_docu
     resources = [
       var.pageviews_count_by_postcode_s3_bucket_arn,
       "${var.pageviews_count_by_postcode_s3_bucket_arn}/*",
+    ]
+  }
+}
+
+########## Kinesis Analytics Application Pageview Counts by Postcode ##########
+resource "aws_iam_role" "pageviews_count_by_postcode_kinesis_application_role" {
+  name = "pageviews_count_by_postcode_kinesis_application_role"
+  assume_role_policy = data.aws_iam_policy_document.pageviews_count_by_postcode_kinesis_application_role_document.json
+}
+
+data "aws_iam_policy_document" "pageviews_count_by_postcode_kinesis_application_role_document" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      identifiers = ["kinesisanalytics.amazonaws.com"]
+      type = "Service"
+    }
+    effect = "Allow"
+    sid = ""
+  }
+}
+
+resource "aws_iam_role_policy" "pageviews_count_by_postcode_kinesis_application_policy" {
+  name = "pageviews_count_by_postcode_kinesis_application_policy"
+  role = aws_iam_role.pageviews_count_by_postcode_kinesis_application_role.id
+  policy = data.aws_iam_policy_document.pageviews_count_by_postcode_kinesis_application_policy_document.json
+}
+
+data "aws_iam_policy_document" "pageviews_count_by_postcode_kinesis_application_policy_document" {
+   statement {
+    sid       = "ReadInputKinesis"
+    effect    = "Allow"
+    resources = [var.enriched_pageviews_stream_arn]
+
+    actions = [
+      "kinesis:DescribeStream",
+      "kinesis:GetShardIterator",
+      "kinesis:GetRecords",
+    ]
+  }
+
+  statement {
+    sid       = "WriteOutputFirehose"
+    effect    = "Allow"
+    resources = ["arn:aws:firehose:eu-west-2:218402439852:deliverystream/pageviews_count_by_postcode_delivery_stream"]
+
+    actions = [
+      "firehose:DescribeDeliveryStream",
+      "firehose:PutRecord",
+      "firehose:PutRecordBatch",
     ]
   }
 }

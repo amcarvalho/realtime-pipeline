@@ -9,3 +9,7 @@ output "pageviews_stream_arn" {
 output "user_stream_arn" {
   value = aws_kinesis_stream.user_stream.arn
 }
+
+output "pageviews_count_by_postcode_delivery_stream_arn" {
+  value = aws_kinesis_firehose_delivery_stream.pageviews_count_by_postcode_delivery_stream.arn
+}
