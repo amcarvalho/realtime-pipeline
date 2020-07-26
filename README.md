@@ -1,7 +1,8 @@
 # Realtime Pipeline
 
-This repo contains a realtime pipeline using 3 Kinesis Streams, 1 Kinesis Data Delivery Stream, 1 DynamoDB
-and 2 Lambda functions. I've created this mostly as an exercise to get up to speed with terraform.
+This repo contains a realtime pipeline using 3 Kinesis streams, 1 Kinesis Data Analytics Application,
+2 Kinesis Firehoses, 1 DynamoDB, 2 Lambda functions and 2 S3 Buckets. I've created this mostly as 
+an exercise to get up to speed with terraform and also get familiar with Kinesis Data Analytics applications.
 
 ## Requirements
 Please install:
@@ -26,6 +27,9 @@ postcode, which the function gets from the DynamoDB. Enriched records containing
 `postcode` are subsequently published to another Kinesis stream.
 * Kinesis stream containing enriched pageviews with triplets `user_id`, `url`, `postcode`.
 * Kinesis delivery stream (firehose) writing enriched pageviews into an S3 bucket
+* Kinesis Data Analytics application aggregating pageviews by postcode on a 1 minute tumbling window
+and writing into another Kinesis delivery stream (firehose)
+* Kinesis delivery stream (firehose) writing pageview counts into an S3 bucket
 
 ![Image description](img/diagram.png)
 

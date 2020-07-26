@@ -1,0 +1,5 @@
+.idea
+.terraform
+prod/outputs
+*tfstate*
+venv

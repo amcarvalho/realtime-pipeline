@@ -12,7 +12,7 @@ dynamodb = boto3.resource('dynamodb', region_name='eu-west-2')
 table = dynamodb.Table('user_table')
 
 
-def pageview_consumer(event, context):
+def pageviews_consumer(event, context):
     for record in event['Records']:
         payload = base64.b64decode(record['kinesis']['data'])
         result = json.loads(payload)
@@ -34,7 +34,7 @@ def pageview_consumer(event, context):
             logger.info(f"User {user_id} postcode not found. Not enriching postcode.")
 
         put_response = kinesis_client.put_record(
-            StreamName="enriched_pageview_stream",
+            StreamName="enriched_pageviews_stream",
             Data=json.dumps(result),
             PartitionKey=user_id
         )
